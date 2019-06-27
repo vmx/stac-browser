@@ -7,7 +7,9 @@ import Ajv from "ajv";
 import AsyncComputed from "vue-async-computed";
 import BootstrapVue from "bootstrap-vue";
 import bs58 from "bs58";
+import { Buffer } from "buffer";
 import Clipboard from "v-clipboard";
+import IpldBlock from "@ipld/block";
 import Meta from "vue-meta";
 import Multiselect from "vue-multiselect";
 import pMap from "p-map";
@@ -276,7 +278,10 @@ const main = async () => {
           const rsp = await fetch(url);
 
           if (rsp.ok) {
-            const entity = await rsp.json();
+            const binary = await rsp.arrayBuffer();
+            const binaryBuffer = Buffer.from(binary);
+            const block = IpldBlock.decoder(binaryBuffer, "dag-cbor");
+            const entity = await block.decode();
 
             commit("LOADED", { entity, url });
           } else {

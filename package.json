@@ -5,19 +5,21 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "build": "NODE_ENV=production parcel build --target=browser index.html",
+    "build": "NODE_ENV=production parcel build --target=browser --public-url ./ index.html",
     "clean": "find dist -not -name _redirects -delete",
     "deploy-prerendered": "npm run clean && npm run build && bin/prerender.js -p $STAC_URL $CATALOG_URL && netlify deploy --prod --dir dist/ --site $NETLIFY_SITE_ID",
     "deploy": "npm run clean && npm run build && netlify deploy --prod --dir dist/ --site $NETLIFY_SITE_ID",
-    "start": "npm run clean && parcel --target=browser index.html"
+    "start": "parcel --target=browser index.html"
   },
   "author": "Seth Fitzsimmons <seth@mojodna.net>",
   "license": "ISC",
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
+    "@ipld/block": "^2.0.4",
     "ajv": "^6.10.0",
     "bootstrap-vue": "^2.0.0-rc.19",
     "bs58": "^4.0.1",
+    "buffer": "^5.2.1",
     "clone": "^2.1.2",
     "command-line-args": "^5.1.1",
     "commonmark": "^0.29.0",
@@ -44,6 +46,7 @@
     "vuex": "^3.1.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
     "@prerenderer/prerenderer": "^0.7.2",
     "@prerenderer/renderer-puppeteer": "^0.2.0",
