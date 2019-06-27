@@ -42,9 +42,25 @@ Vue.use(Meta);
 Vue.use(VueRouter);
 Vue.use(Vuex);
 
-const CATALOG_URL =
-  process.env.CATALOG_URL ||
-  "https://storage.googleapis.com/pdd-stac/disasters/catalog.json";
+const create_catalog_url = () => {
+  if (process.env.CATALOG_URL) {
+    const parsed = url.parse(process.env.CATALOG_URL);
+    // It's a relative URL, make a full URL out of it
+    if (parsed.hostname === null) {
+      const base = path.dirname(window.location.pathname);
+      const absolutePath = path.join(base, parsed.pathname);
+      const dest = new URL(window.location.href);
+      dest.pathname = absolutePath;
+      return dest.toString();
+    } else {
+      return process.env.CATALOG_URL;
+    }
+  } else {
+    return "https://storage.googleapis.com/pdd-stac/disasters/catalog.json";
+  }
+};
+
+const CATALOG_URL = create_catalog_url();
 
 const makeRelative = uri => {
   const rootURI = url.parse(CATALOG_URL);
