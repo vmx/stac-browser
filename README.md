@@ -1,3 +1,45 @@
+# STAC Browser on IPLD
+
+This is a fork of the [STAC Browser](https://github.com/radiantearth/stac-browser/) to make it work with [IPLD](https://ipld.io/).
+
+
+## Building
+
+First convert your STAC catalog to IPLD with [ipld-stac](https://github.com/vmx/ipld-stac). Remember the root CID that it outputs.
+
+Now build the STAC Browser:
+
+```console
+$ CATALOG_URL=ipld/<the-root-cid> npm run build
+```
+
+This will create a deployable STAC Browser in the `dist` directory.
+
+Now put the files created by ipld-stac into `dist/ipld`. You can now run an HTTP server inside `dist` or just deploy the contents of `dist` somewhere.
+
+
+## Deployment on GitHub Pages
+
+You can deploy the `dist` directory to GitHub pages. This is a hacky, but quick way:
+
+```console
+$ cd dist
+$ git init .
+$ git remote add origin git@github.com:<username>/<repository>.git
+$ git checkout --orphan gh-pages
+$ git add *
+$ git commit -m "Initial commit"
+$ git push origin gh-pages
+```
+
+You can find an example at https://vmx.github.io/stac-browser/index.html.
+
+
+## Original README
+
+Below is the original README.
+
+
 # STAC Browser
 
 This is a [Spatio-Temporal Asset Catalog
